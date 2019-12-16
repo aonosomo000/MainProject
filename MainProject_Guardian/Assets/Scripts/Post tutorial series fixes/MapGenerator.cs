@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 public class MapGenerator : MonoBehaviour {
-	
+
+    public NavMeshSurface surface;
+
 	public Map[] maps;
 	public int mapIndex;
 	
@@ -26,7 +29,8 @@ public class MapGenerator : MonoBehaviour {
 	Map currentMap;
 	
 	void Awake() {
-		//FindObjectOfType<Spawner> ().OnNewWave += OnNewWave;
+        //FindObjectOfType<Spawner> ().OnNewWave += OnNewWave;
+        
 	}
 
 	void OnNewWave(int waveNumber) {
@@ -34,7 +38,13 @@ public class MapGenerator : MonoBehaviour {
 		GenerateMap ();
 	}
 
-	public void GenerateMap() {
+    private void Update()
+    {
+        surface.BuildNavMesh();
+    }
+
+
+    public void GenerateMap() {
 		currentMap = maps[mapIndex];
 		tileMap = new Transform[currentMap.mapSize.x,currentMap.mapSize.y];
 		System.Random prng = new System.Random (currentMap.seed);
